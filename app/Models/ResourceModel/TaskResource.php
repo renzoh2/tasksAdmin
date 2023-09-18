@@ -33,7 +33,7 @@ class TaskResource implements taskInterface
         {
             $tasks = $tasks->where($data->getFilter()["key"], "REGEXP", $data->getFilter()["value"]);
         }
-
+        $tasks = $tasks->where("user_id","=", $data->getId());
         //Default Where
         $tasks = $tasks->where((function($q) {
             $q->where('status', '=', 'todo')

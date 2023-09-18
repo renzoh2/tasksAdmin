@@ -8,6 +8,7 @@ class filterData
     private $orderBy = null;
     private $page = null;
     private $limit = null;
+    private $id = null;
 
     function __construct($request){
         $this->filter = $request['filter'] ?: null;
@@ -15,6 +16,7 @@ class filterData
         $this->orderBy = $request['orderBy'] ?: "ASC";
         $this->page = $request['page'] ?: 0;
         $this->limit = $request['limit'] ?: 10;
+        $this->id = $request['id'] ?: null;
     }
 
     public function getFilter()
@@ -40,6 +42,11 @@ class filterData
     public function getLimit()
     {
         return $this->limit;
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 }
 

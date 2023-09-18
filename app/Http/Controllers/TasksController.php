@@ -16,6 +16,7 @@ class TasksController extends Controller
    
     public function index(Request $request)
     {
+        $request['id'] = Auth::id();
         $data = new filterData($request);
         $tasks = TaskResource::filterAndPaginate($data);
         
