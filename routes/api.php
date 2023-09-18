@@ -22,12 +22,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //Authentication
 route::post("/login",[AuthController::class, "loginAccount"]);
-route::post("/logout",[AuthController::class, "logoutAccount"]);
+route::get("/logout",[AuthController::class, "logoutAccount"]);
 
 //Tasks
-route::get("/tasks",[TasksController::class,"index"]);
-route::post("/tasks",[TasksController::class,"store"]);
-route::get("/tasks/{id}",[TasksController::class,"show"]);
-route::patch("/tasks/{id}",[TasksController::class,"update"]);
-route::patch("/tasks/archive/{id}",[TasksController::class,"archive"]);
-route::delete("/tasks/{id}",[TasksController::class,"destroy"]);
+route::middleware("auth:sanctum")->group( function () {
+    route::get("/tasks",[TasksController::class,"index"]);
+    route::post("/tasks",[TasksController::class,"store"]);
+    route::get("/tasks/{id}",[TasksController::class,"show"]);
+    route::put("/tasks/{id}",[TasksController::class,"update"]);
+    route::delete("/tasks/archive/{id}",[TasksController::class,"archive"]);
+    route::delete("/tasks/{id}",[TasksController::class,"destroy"]);
+});

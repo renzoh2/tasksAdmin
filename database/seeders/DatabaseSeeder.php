@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Task::factory()->create([
             'task_title' => 'Sample Task 1',
             'task_description' => 'Sample 1 Description',
-            'status' => "active",
+            'status' => "todo",
             "user_id" => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Task::factory()->create([
             'task_title' => 'Sample Task 2',
             'task_description' => 'Sample 2 Description',
-            'status' => "active",
+            'status' => "todo",
             "user_id" => 2,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Task::factory()->create([
             'task_title' => 'Sample Task 3',
             'task_description' => 'Sample 3 Description',
-            'status' => "active",
+            'status' => "todo",
             "user_id" => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()

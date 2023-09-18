@@ -6,6 +6,7 @@ use App\Models\Task;
 use App\Models\Interfaces\taskInterface;
 use App\Http\Utils\filterData;
 use App\Models\DataModel\Tasks;
+use Exception;
 
 class TaskResource implements taskInterface
 {
@@ -21,18 +22,23 @@ class TaskResource implements taskInterface
 
     public static function filterById($id)
     {
-        return Task::where("id", "=", $id)->get();
+        return Task::where("id", "=", $id)->first();
     }
 
     public static function filterAndPaginate(filterData $data)
     {
         $tasks = new Task;
 
+        //Default Where
+        $tasks = $tasks->where([
+            ['status','=','todo'],
+        ]);
+
         if($data->getFilter())
         {
             $tasks = $tasks->where([
                 [$data->getFilter()["key"], "like", $data->getFilter()["value"].'%'],
-                ['status','=','active']
+                ['status','=','todo'],
             ]);
         }
        
@@ -46,17 +52,31 @@ class TaskResource implements taskInterface
 
     public static function create(Tasks $task)
     {
+        
         $taskModel = new Task();
         $taskModel->task_title = $task->task_title;
         $taskModel->task_description = $task->task_description;
         $taskModel->user_id = $task->user_id;
-
+       try {
         return $taskModel->save();
+       }
+       catch( Exception $e)
+       {
+        return false;
+       }
     }
 
     public static function update(Tasks $task, $id)
     {
-        $taskModel = Task::where('id', $id)->update((array) $task);
+        try{
+            Task::where('id', $id)->update((array) $task);
+            return Task::where("id", $id)->first();
+        }
+        catch( Exception $e)
+       {
+        return $e->getMessage();
+       }
+        
     }
 
     public static function archive($id)

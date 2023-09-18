@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('task_description');
             $table->unsignedBigInteger('maintask_id')->nullable();
             $table->unsignedBigInteger('user_id');
-            $table->string('status');
+            $table->string('status')->default("todo");
             $table->timestamps();
             $table->foreign('maintask_id')->references('id')->on('tasks');
             $table->foreign('user_id')->references('id')->on('users');

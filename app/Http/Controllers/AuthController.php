@@ -15,19 +15,27 @@ class AuthController extends Controller
         
         if (Auth::attempt($credentials, $request['remember'])) {
            
-            return Auth::check();
+            $user = Auth::user();
+            
+            /** @var \App\Models\User|null $user */
+            $data["token"] = $user->createToken('adminTaskToken')->plainTextToken; 
+            $data['name'] =  $user->name;
 
-            // if(Auth::check())
-            //     return ResponseBuilder::response(http_response_code(),"Login Success!");
-            // else
-            //     return ResponseBuilder::response(http_response_code(500),"Login Error!");
+            if(Auth::check())
+                return ResponseBuilder::response(http_response_code(),"Success","Login Success!", "Login Credentials Authenticated", $data);
+            else
+                return ResponseBuilder::response(http_response_code(), "Fail","Login Error!","Login Credentials Failed to Authenticate");
         }
-        // else
-        //     return ResponseBuilder::response(401,"Login Failed!");
+        else
+            return ResponseBuilder::response(http_response_code(), "Fail","Login Failed!", "Wrong Login Credentials");
     }
 
     public function logoutAccount()
     {
-        Auth::logout();
+        $user = Auth::user();
+
+        /** @var \App\Models\User|null $user */
+        $user->tokens()->delete();
+        return Auth::logout();
     }
 }
