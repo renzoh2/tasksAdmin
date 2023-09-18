@@ -29,19 +29,18 @@ class TaskResource implements taskInterface
     {
         $tasks = new Task;
 
-        //Default Where
-        $tasks = $tasks->where([
-            ['status','=','todo'],
-        ]);
-
-        if($data->getFilter())
+        if(!empty($data->getFilter()))
         {
-            $tasks = $tasks->where([
-                [$data->getFilter()["key"], "like", $data->getFilter()["value"].'%'],
-                ['status','=','todo'],
-            ]);
+            $tasks = $tasks->where($data->getFilter()["key"], "REGEXP", $data->getFilter()["value"]);
         }
-       
+
+        //Default Where
+        $tasks = $tasks->where((function($q) {
+            $q->where('status', '=', 'todo')
+              ->orWhere('status', '=', 'inprogress')
+              ->orWhere('status', '=', 'completed');
+        }));
+
         $tasks = $tasks->orderBy($data->getSort(), $data->getOrderBy());
 
         //page skip computation

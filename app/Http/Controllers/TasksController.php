@@ -74,7 +74,7 @@ class TasksController extends Controller
                 $response['status'] = $data['status'];
                 $response['user'] = $user['name'];
             
-            return ResponseBuilder::response(http_response_code(),"Success","Task Updated!", "Task is successfully saved!", $response);
+            return ResponseBuilder::response(http_response_code(),"Success","Task Updated!", "Task is successfully updated!", $response);
         }
         else
         {
